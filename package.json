@@ -1,0 +1,25 @@
+{
+  "name": "onemanturtle",
+  "version": "1.0.0",
+  "description": "Final Project for Momentum",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html --public-url ./",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SucioLoco/OneManTurtle.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SucioLoco/OneManTurtle/issues"
+  },
+  "homepage": "https://github.com/SucioLoco/OneManTurtle#readme",
+  "dependencies": {
+    "parcel": "^2.3.1",
+    "phaser": "^3.55.2"
+  }
+}
