@@ -1,0 +1,340 @@
+{
+  "frames": [
+    {
+      "filename": "grid.png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 542,
+        "h": 543
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 4,
+        "y": 0,
+        "w": 542,
+        "h": 543
+      },
+      "sourceSize": {
+        "w": 546,
+        "h": 547
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "blob-orange.png",
+      "frame": {
+        "x": 0,
+        "y": 543,
+        "w": 50,
+        "h": 48
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 1,
+        "w": 50,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 51,
+        "h": 49
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "blob-yellow.png",
+      "frame": {
+        "x": 0,
+        "y": 593,
+        "w": 50,
+        "h": 48
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 1,
+        "w": 50,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 52,
+        "h": 49
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "blob-blue.png",
+      "frame": {
+        "x": 0,
+        "y": 643,
+        "w": 50,
+        "h": 46
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 1,
+        "w": 50,
+        "h": 46
+      },
+      "sourceSize": {
+        "w": 51,
+        "h": 47
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "blob-pink.png",
+      "frame": {
+        "x": 0,
+        "y": 693,
+        "w": 50,
+        "h": 45
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 1,
+        "w": 50,
+        "h": 45
+      },
+      "sourceSize": {
+        "w": 51,
+        "h": 49
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "blob-red.png",
+      "frame": {
+        "x": 0,
+        "y": 743,
+        "w": 50,
+        "h": 45
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 1,
+        "w": 50,
+        "h": 45
+      },
+      "sourceSize": {
+        "w": 51,
+        "h": 46
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "blob-green.png",
+      "frame": {
+        "x": 0,
+        "y": 793,
+        "w": 44,
+        "h": 50
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 1,
+        "w": 44,
+        "h": 50
+      },
+      "sourceSize": {
+        "w": 46,
+        "h": 51
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "blue-square.png",
+      "frame": {
+        "x": 0,
+        "y": 843,
+        "w": 38,
+        "h": 38
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 1,
+        "w": 38,
+        "h": 38
+      },
+      "sourceSize": {
+        "w": 38,
+        "h": 39
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "orange-square.png",
+      "frame": {
+        "x": 0,
+        "y": 881,
+        "w": 38,
+        "h": 37
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 38,
+        "h": 37
+      },
+      "sourceSize": {
+        "w": 38,
+        "h": 37
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "yellow-square.png",
+      "frame": {
+        "x": 0,
+        "y": 919,
+        "w": 38,
+        "h": 37
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 2,
+        "w": 38,
+        "h": 37
+      },
+      "sourceSize": {
+        "w": 38,
+        "h": 39
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "pink-square.png",
+      "frame": {
+        "x": 0,
+        "y": 957,
+        "w": 37,
+        "h": 37
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 0,
+        "w": 37,
+        "h": 37
+      },
+      "sourceSize": {
+        "w": 38,
+        "h": 37
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "red-square.png",
+      "frame": {
+        "x": 0,
+        "y": 994,
+        "w": 37,
+        "h": 37
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 2,
+        "w": 37,
+        "h": 37
+      },
+      "sourceSize": {
+        "w": 38,
+        "h": 39
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "green-square.png",
+      "frame": {
+        "x": 0,
+        "y": 1031,
+        "w": 36,
+        "h": 36
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 1,
+        "w": 36,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 36,
+        "h": 37
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "blobs.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 542,
+      "h": 1067
+    },
+    "scale": 1
+  }
+}
