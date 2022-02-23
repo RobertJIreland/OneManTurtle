@@ -13,6 +13,8 @@ class Game extends Phaser.Scene
         this.gridBG;
         this.currentColor = ''
         this.frames = ["orange-square.png", "yellow-square.png", "blue-square.png", "pink-square.png", "red-square.png", "green-square.png" ];
+        this.moves = 25
+        this.matched = []
     }
     
     create()
@@ -72,34 +74,129 @@ class Game extends Phaser.Scene
         }
         blobOrange.on('pointerdown', () =>
         {
-            this.currentColor = blobOrange.getData('color')
-            console.log(this.currentColor)
+            let newColor = blobOrange.getData('color')
+            let oldColor = this.grid[0][0].getData('color')
+
+            if (newColor === this.currentColor)
+            {
+                console.log("Same Color")
+            }
+
+            else if (oldColor !== newColor)
+            {
+                console.log("different colors")
+                this.currentColor = newColor
+                this.matched = []
+                this.moves--
+                console.log(this.currentColor)
+                // floodFill()
+            }
         })
         blobYellow.on('pointerdown', () =>
         {
-            this.currentColor = blobYellow.getData('color')
-            console.log(this.currentColor)
+            let newColor = blobYellow.getData('color')
+            let oldColor = this.grid[0][0].getData('color')
+            
+            if (newColor === this.currentColor)
+            {
+                console.log("Same Color")
+            }
+
+            else if (oldColor !== newColor)
+            {
+                console.log("different colors")
+                this.currentColor = newColor
+                this.matched = []
+                this.moves--
+                console.log(this.currentColor)
+                // floodFill()
+            }
         })
         blobBlue.on('pointerdown', () =>
         {
-            this.currentColor = blobBlue.getData('color')
-            console.log(this.currentColor)
+            let newColor = blobBlue.getData('color')
+            let oldColor = this.grid[0][0].getData('color')
+            
+            if (newColor === this.currentColor)
+            {
+                console.log("Same Color")
+            }
+
+            else if (oldColor !== newColor)
+            {
+                console.log("different colors")
+                this.currentColor = newColor
+                this.matched = []
+                this.moves--
+                console.log(this.currentColor)
+                // floodFill()
+            }
         })
         blobPink.on('pointerdown', () =>
         {
-            this.currentColor = blobPink.getData('color')
-            console.log(this.currentColor)
+            let newColor = blobPink.getData('color')
+            let oldColor = this.grid[0][0].getData('color')
+            
+            if (newColor === this.currentColor)
+            {
+                console.log("Same Color")
+            }
+
+            else if (oldColor !== newColor)
+            {
+                console.log("different colors")
+                this.currentColor = newColor
+                this.matched = []
+                this.moves--
+                console.log(this.currentColor)
+                // floodFill()
+            }
         })
         blobRed.on('pointerdown', () =>
         {
-            this.currentColor = blobRed.getData('color')
-            console.log(this.currentColor)
+            let newColor = blobRed.getData('color')
+            let oldColor = this.grid[0][0].getData('color')
+            
+            if (newColor === this.currentColor)
+            {
+                console.log("Same Color")
+            }
+
+            else if (oldColor !== newColor)
+            {
+                console.log("different colors")
+                this.currentColor = newColor
+                this.matched = []
+                this.moves--
+                console.log(this.currentColor)
+                // floodFill()
+            }
         })
         blobGreen.on('pointerdown', () =>
         {
-            this.currentColor = blobGreen.getData('color')
-            console.log(this.currentColor)
+            let newColor = blobGreen.getData('color')
+            let oldColor = this.grid[0][0].getData('color')
+            console.log("CurrentColor", this.currentColor)
+            
+            if (newColor === this.currentColor)
+            {
+                console.log("Same Color")
+            }
+
+            else if (oldColor !== newColor)
+            {
+                console.log("different colors")
+                this.currentColor = newColor
+                this.matched = []
+                this.moves--
+                console.log(this.currentColor)
+                // floodFill()
+            }
         })
+        // const floodFill = (oldColor, newColor, x, y) =>
+        // {
+
+        // }
     }
 }
 
