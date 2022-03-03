@@ -11,10 +11,11 @@ class Game extends Phaser.Scene
 
         this.grid = []
         this.gridBG;
-        this.currentColor = ''
+        this.currentColor = []
         this.frames = ["orange-square.png", "yellow-square.png", "blue-square.png", "pink-square.png", "red-square.png", "green-square.png" ];
         this.moves = 25
         this.matched = []
+        this.block;
     }
     
     create()
@@ -24,13 +25,22 @@ class Game extends Phaser.Scene
         this.gridBG = this.add.image(675, 300, "blobs", "grid.png")
 
         // Blobs
-        // Orange
         const blobOrange = new Blob(this, 325, 100, 'blobs', 'blob-orange.png')
         const blobYellow = new Blob(this, 325, 325, 'blobs', 'blob-yellow.png')
         const blobBlue = new Blob(this, 325, 525, 'blobs', 'blob-blue.png')
         const blobPink = new Blob(this, 1025, 100, 'blobs', 'blob-pink.png')
         const blobRed = new Blob(this, 1025, 325, 'blobs', 'blob-red.png')
         const blobGreen = new Blob(this, 1025, 525, 'blobs', 'blob-green.png')
+        
+        const blobCollection = 
+        [
+            blobOrange,
+            blobYellow,
+            blobBlue,
+            blobPink,
+            blobRed,
+            blobGreen
+        ]
         
         this.add.existing(blobOrange)
         this.add.existing(blobYellow)
@@ -43,7 +53,7 @@ class Game extends Phaser.Scene
 
         // Grid
         for (let x = 0; x < 14; x++)
-        {
+        {   
             this.grid[x] = []
 
             for (let y = 0; y < 14; y++)
@@ -52,13 +62,13 @@ class Game extends Phaser.Scene
                 let sy = 63 + (y * 36);
                 let color = Phaser.Math.Between(0, 5);
 
-                let block = this.add.image(sx, sy, "blobs", this.frames[color])
+                this.block = this.add.image(sx, sy, "blobs", this.frames[color])
             
 
-                block.setData('oldColor', color)
-                block.setData('color', color)
-                block.setData("x", sx);
-                block.setData("y", sy);
+                this.block.setData('oldColor', color)
+                this.block.setData('color', color)
+                this.block.setData("x", sx);
+                this.block.setData("y", sy);
                 
                 blobOrange.setData('color', this.frames.indexOf('orange-square.png'))
                 blobYellow.setData('color', this.frames.indexOf('yellow-square.png'))
@@ -68,136 +78,69 @@ class Game extends Phaser.Scene
                 blobGreen.setData('color', this.frames.indexOf('green-square.png'))
                 
 
-                this.grid[x][y] = block;
-                this.currentColor = this.grid[0][0]
+                this.grid[x][y] = this.block;
             }
         }
-        blobOrange.on('pointerdown', () =>
-        {
-            let newColor = blobOrange.getData('color')
-            let oldColor = this.grid[0][0].getData('color')
 
-            if (newColor === this.currentColor)
-            {
-                console.log("Same Color")
-            }
 
-            else if (oldColor !== newColor)
-            {
-                console.log("different colors")
-                this.currentColor = newColor
-                this.matched = []
-                this.moves--
-                console.log(this.currentColor)
-                // floodFill()
-            }
-        })
-        blobYellow.on('pointerdown', () =>
+
+        for (let blobObject of blobCollection)
         {
-            let newColor = blobYellow.getData('color')
-            let oldColor = this.grid[0][0].getData('color')
+            blobObject.on('pointerdown', () =>
+            {
+                let buttonColor = blobObject.getData('color')
+                this.currentColor = this.grid[0][0].getData("color")
             
-            if (newColor === this.currentColor)
-            {
-                console.log("Same Color")
-            }
+                if (this.currentColor !== buttonColor)
+                {   
+                    this.grid[0][0].setTexture("blobs", this.frames[buttonColor])
+                    this.moves--
+                    this.floodFill(buttonColor, 0 + 1, 0)
+                }
+                
+            })
+        }
+    }
 
-            else if (oldColor !== newColor)
-            {
-                console.log("different colors")
-                this.currentColor = newColor
-                this.matched = []
-                this.moves--
-                console.log(this.currentColor)
-                // floodFill()
-            }
-        })
-        blobBlue.on('pointerdown', () =>
+    floodFill(buttonColor, x, y)
+    {   // buttonColor === button color
+        // currentColor === buttonColor
+        // this.currentCOlor === grid[0][0]
+        // First iteration currentColor always === buttonColor
+        let blockColor = this.grid[x][y].getData("color")
+        if (blockColor === buttonColor)
         {
-            let newColor = blobBlue.getData('color')
-            let oldColor = this.grid[0][0].getData('color')
+            return
+        }
+        else (x < 13)
+        {   
             
-            if (newColor === this.currentColor)
-            {
-                console.log("Same Color")
-            }
-
-            else if (oldColor !== newColor)
-            {
-                console.log("different colors")
-                this.currentColor = newColor
-                this.matched = []
-                this.moves--
-                console.log(this.currentColor)
-                // floodFill()
-            }
-        })
-        blobPink.on('pointerdown', () =>
-        {
-            let newColor = blobPink.getData('color')
-            let oldColor = this.grid[0][0].getData('color')
-            
-            if (newColor === this.currentColor)
-            {
-                console.log("Same Color")
-            }
-
-            else if (oldColor !== newColor)
-            {
-                console.log("different colors")
-                this.currentColor = newColor
-                this.matched = []
-                this.moves--
-                console.log(this.currentColor)
-                // floodFill()
-            }
-        })
-        blobRed.on('pointerdown', () =>
-        {
-            let newColor = blobRed.getData('color')
-            let oldColor = this.grid[0][0].getData('color')
-            
-            if (newColor === this.currentColor)
-            {
-                console.log("Same Color")
-            }
-
-            else if (oldColor !== newColor)
-            {
-                console.log("different colors")
-                this.currentColor = newColor
-                this.matched = []
-                this.moves--
-                console.log(this.currentColor)
-                // floodFill()
-            }
-        })
-        blobGreen.on('pointerdown', () =>
-        {
-            let newColor = blobGreen.getData('color')
-            let oldColor = this.grid[0][0].getData('color')
-            console.log("CurrentColor", this.currentColor)
-            
-            if (newColor === this.currentColor)
-            {
-                console.log("Same Color")
-            }
-
-            else if (oldColor !== newColor)
-            {
-                console.log("different colors")
-                this.currentColor = newColor
-                this.matched = []
-                this.moves--
-                console.log(this.currentColor)
-                // floodFill()
-            }
-        })
-        // const floodFill = (oldColor, newColor, x, y) =>
+            this.floodFill(buttonColor, x + 1, y)
+        }
+        // if (buttonColor !== this.currentColor)
         // {
-
+        //     this.grid[x][y].setTexture("blobs", this.frames[buttonColor])
+        //     this.currentColor = buttonColor
+        //     this.floodFill(buttonColor, 0, 0)
+        // }
+        // else
+        // {   
+        //     if (x < 13)
+        //     {
+        //         if(this.grid[x][y].getData('color') !== buttonColor)
+        //         {   
+        //             this.floodFill(buttonColor, x + 1, y)
+        //         }
+        //         this.grid[x][y].setTexture("blobs", this.frames[buttonColor])
+        //     }
+        // console.log("attempted change")
         // }
     }
 }
 
 export default Game
+
+// first check if it isnt the color 
+// second check if it is the same color
+1
+[1, 1, 2, 0]
