@@ -67,8 +67,7 @@ class Game extends Phaser.Scene
 
                 this.block.setData('oldColor', color)
                 this.block.setData('color', color)
-                this.block.setData("x", sx);
-                this.block.setData("y", sy);
+
                 
                 blobOrange.setData('color', this.frames.indexOf('orange-square.png'))
                 blobYellow.setData('color', this.frames.indexOf('yellow-square.png'))
@@ -93,9 +92,8 @@ class Game extends Phaser.Scene
             
                 if (this.currentColor !== buttonColor)
                 {   
-                    this.grid[0][0].setTexture("blobs", this.frames[buttonColor])
                     this.moves--
-                    this.floodFill(buttonColor, 0 + 1, 0)
+                    this.floodFill(buttonColor, 0, 0)
                 }
                 
             })
@@ -103,26 +101,20 @@ class Game extends Phaser.Scene
     }
 
     floodFill(buttonColor, x, y)
-    {   // buttonColor === button color
-        // currentColor === buttonColor
-        // this.currentCOlor === grid[0][0]
-        // First iteration currentColor always === buttonColor
-        let blockColor = this.grid[x][y].getData("color")
-        if (blockColor === buttonColor)
+    {   
+        if (x === 0)
         {
-            return
-        }
-        else (x < 13)
-        {   
-            
+            this.grid[x][y].setTexture("blobs", this.frames[buttonColor])
+            this.currentColor = this.grid[x + 1][y].getData('color')
             this.floodFill(buttonColor, x + 1, y)
         }
-        // if (buttonColor !== this.currentColor)
-        // {
-        //     this.grid[x][y].setTexture("blobs", this.frames[buttonColor])
-        //     this.currentColor = buttonColor
-        //     this.floodFill(buttonColor, 0, 0)
-        // }
+
+        else if (this.currentColor === buttonColor)
+        {   
+            console.log("hey")
+            this.currentColor = this.grid[x + 1][y].getData('color')
+            this.floodFill(buttonColor, x + 1, y)
+        }
         // else
         // {   
         //     if (x < 13)
@@ -142,5 +134,3 @@ export default Game
 
 // first check if it isnt the color 
 // second check if it is the same color
-1
-[1, 1, 2, 0]
