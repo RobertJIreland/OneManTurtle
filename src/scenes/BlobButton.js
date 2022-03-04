@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 
+
 export default class Blob extends Phaser.GameObjects.Image
 {
     constructor(scene, x, y, texture, frame,)
@@ -11,9 +12,5 @@ export default class Blob extends Phaser.GameObjects.Image
         this.setDisplaySize(100, 100)
         this.setInteractive()
         this.setDataEnabled()
-        // this.on('pointerdown', () =>
-        // {   
-        //     console.log(block)
-        // })
     }
 }
