@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import Blob from './BlobButton.js'
+import MusicButton from './MusicButton.js'
 
 
 
@@ -23,6 +24,21 @@ class Game extends Phaser.Scene
         // Background & Game Board Grid
         this.add.image(400, 200, 'background')
         this.gridBG = this.add.image(675, 300, "blobs", "grid.png")
+
+        // Music Button
+        const musicButton = new MusicButton(this, 50, 50, 'musicButton')
+        this.add.existing(musicButton)
+        musicButton.on('pointerdown', () =>
+        {
+            if (musicButton.isTinted === false)
+            {
+                musicButton.setTint(0xff0000)
+            }
+            else
+            {
+                musicButton.clearTint()
+            }
+        })
 
         // Blobs
         const blobOrange = new Blob(this, 325, 100, 'blobs', 'blob-orange.png')
