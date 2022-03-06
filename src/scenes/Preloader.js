@@ -4,6 +4,8 @@ import blobsImage from '../../assets/blobs.png'
 import blobsJson from '../../assets/blobs.json'
 import musicButton from '../../assets/music-button.png'
 import audio from '../../assets/music.ogg'
+import goodSound from '../../assets/positive.wav'
+import badSound from '../../assets/negative_2.wav'
 
 
 class Preloader extends Phaser.Scene
@@ -25,6 +27,10 @@ class Preloader extends Phaser.Scene
 
         // Audio
         this.load.audio('audio', audio)
+
+        // Sound Effects
+        this.load.audio('goodSound', goodSound)
+        this.load.audio('badSound', badSound)
     }
     create()
     {

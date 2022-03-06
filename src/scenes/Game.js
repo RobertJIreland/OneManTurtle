@@ -26,8 +26,19 @@ class Game extends Phaser.Scene
         this.gridBG = this.add.image(675, 300, "blobs", "grid.png")
 
         // Audio
-        this.backgroundMusic = this.sound.add('audio')
+        this.backgroundMusic = this.sound.add('audio', {
+            volume: 0.3,
+            loop: true
+        })
         this.backgroundMusic.play()
+
+        // Sound Effects
+        this.goodSound = this.sound.add('goodSound', {
+            volume: 0.5
+        })
+        this.badSound = this.sound.add('badSound', {
+            volume: 3
+        })
 
         // Music Button
         const musicButton = new MusicButton(this, 50, 50, 'musicButton')
@@ -116,8 +127,13 @@ class Game extends Phaser.Scene
             
                 if (this.currentColor !== buttonColor)
                 {   
+                    this.goodSound.play()
                     this.moves--
                     this.floodFill(buttonColor, 0, 0)
+                }
+                else
+                {
+                    this.badSound.play()
                 }
                 // this.currentColor = this.grid[0][0].getData("color")
             
