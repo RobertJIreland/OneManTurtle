@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import Blob from './BlobButton.js'
-import MusicButton from './MusicButton.js'
+import MusicButton from './musicButton.js'
 
 
 
@@ -56,8 +56,6 @@ class Game extends Phaser.Scene
                 this.backgroundMusic.resume()
             }
         })
-        
-        
 
         // Blobs
         const blobOrange = new Blob(this, 325, 100, 'blobs', 'blob-orange.png')
@@ -66,6 +64,9 @@ class Game extends Phaser.Scene
         const blobPink = new Blob(this, 1025, 100, 'blobs', 'blob-pink.png')
         const blobRed = new Blob(this, 1025, 325, 'blobs', 'blob-red.png')
         const blobGreen = new Blob(this, 1025, 525, 'blobs', 'blob-green.png')
+
+        // lol
+        blobGreen.setAngle(0)
         
         const blobCollection = 
         [
@@ -163,9 +164,6 @@ class Game extends Phaser.Scene
         }
     }
 
-
-
-    //
     checkBlocks(coordsToAdd)
     {
         for (let blocks of this.matched)
@@ -239,28 +237,6 @@ class Game extends Phaser.Scene
     {   
         this.grid[x][y].setTexture("blobs", this.frames[buttonColor])
         this.currentColor = buttonColor
-        // if (x === 0)
-        // {
-        //     this.grid[x][y].setTexture("blobs", this.frames[buttonColor])
-        //     this.currentColor = buttonColor
-        // }
-        // else if (this.currentColor === buttonColor)
-        // {   
-        //     this.currentColor = this.grid[x + 1][y].getData('color')
-        //     this.floodFill(buttonColor, x + 1, y)
-        // }
-        // else
-        // {   
-        //     if (x < 13)
-        //     {
-        //         if(this.grid[x][y].getData('color') !== buttonColor)
-        //         {   
-        //             this.floodFill(buttonColor, x + 1, y)
-        //         }
-        //         this.grid[x][y].setTexture("blobs", this.frames[buttonColor])
-        //     }
-        // console.log("attempted change")
-        // }
     }
 }
 
