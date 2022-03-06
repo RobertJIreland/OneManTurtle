@@ -25,6 +25,10 @@ class Game extends Phaser.Scene
         this.add.image(400, 200, 'background')
         this.gridBG = this.add.image(675, 300, "blobs", "grid.png")
 
+        // Audio
+        this.backgroundMusic = this.sound.add('audio')
+        this.backgroundMusic.play()
+
         // Music Button
         const musicButton = new MusicButton(this, 50, 50, 'musicButton')
         this.add.existing(musicButton)
@@ -33,12 +37,16 @@ class Game extends Phaser.Scene
             if (musicButton.isTinted === false)
             {
                 musicButton.setTint(0xff0000)
+                this.backgroundMusic.pause()
             }
             else
             {
                 musicButton.clearTint()
+                this.backgroundMusic.resume()
             }
         })
+        
+        
 
         // Blobs
         const blobOrange = new Blob(this, 325, 100, 'blobs', 'blob-orange.png')

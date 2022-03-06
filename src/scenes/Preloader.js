@@ -3,6 +3,7 @@ import backgroundImage from '../../assets/backgrounds-3.png'
 import blobsImage from '../../assets/blobs.png'
 import blobsJson from '../../assets/blobs.json'
 import musicButton from '../../assets/music-button.png'
+import audio from '../../assets/music.ogg'
 
 
 class Preloader extends Phaser.Scene
@@ -21,6 +22,9 @@ class Preloader extends Phaser.Scene
 
         // Music Button
         this.load.image('musicButton', musicButton)
+
+        // Audio
+        this.load.audio('audio', audio)
     }
     create()
     {
