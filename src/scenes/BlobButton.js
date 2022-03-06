@@ -4,7 +4,7 @@ import Phaser from 'phaser'
 
 export default class Blob extends Phaser.GameObjects.Image
 {
-    constructor(scene, x, y, texture, frame,)
+    constructor(scene, x, y, texture, frame)
     {
         super(scene, x, y, texture, frame, 'Blob')
         
