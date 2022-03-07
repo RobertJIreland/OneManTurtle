@@ -152,9 +152,8 @@ class Game extends Phaser.Scene
                 coordsToAdd = this.checkBlocks(coordsToAdd);
                 // need to work on not adding duplicate coords
                 // if a new block is connected and the same color, then we need to check that block too
-
                 this.matched = this.matched.concat(coordsToAdd)
-
+                console.log(this.matched)
                 // update colors for blocks in matched array
                 for (let blocks of this.matched)
                 { 
@@ -164,74 +163,84 @@ class Game extends Phaser.Scene
         }
     }
 
+
+    checkDupe(coords, coordsToAdd)
+    {
+        let b = JSON.stringify(coords)
+        let test = JSON.stringify(this.matched.concat(coordsToAdd))
+        return test.indexOf(b) === -1
+    }
+
     checkBlocks(coordsToAdd)
     {
+        let reCheck = false
         for (let blocks of this.matched)
         {
-            
-            let rightColor = null
-            let leftColor = null
-            let upColor = null
-            let downColor = null
-            
             if (blocks[0] < 13)
             {
-                rightColor = this.grid[blocks[0] + 1][blocks[1]].getData("color")
+                let coords = [blocks[0] + 1, blocks[1]]
+                let rightColor = this.grid[blocks[0] + 1][blocks[1]].getData("color")
+
                 if (rightColor === this.currentColor)
                 {
-                    console.log('update right')
-                    coordsToAdd.push( [blocks[0] + 1, blocks[1]])
+                    if (this.checkDupe(coords, coordsToAdd))
+                    {
+                        coordsToAdd.push(coords)
+                        reCheck = true
+                    }
                 }
             }
             if (blocks[0] > 0)
-            {
-                leftColor = this.grid[blocks[0] - 1][blocks[1]].getData('color')
+            {   
+                let coords = [blocks[0] - 1, blocks[1]]
+                let leftColor = this.grid[blocks[0] - 1][blocks[1]].getData('color')
+
                 if (leftColor === this.currentColor)
                 {
-                    console.log('update left')
-                    coordsToAdd.push([blocks[0] - 1, blocks[1]])
+                    if (this.checkDupe(coords, coordsToAdd))
+                    {
+                        coordsToAdd.push(coords)
+                        reCheck = true
+                    }
                 }
             }
             if (blocks[1] > 0)
-            {
-                upColor = this.grid[blocks[0]][blocks[1] - 1].getData('color')
+            {   
+                let coords = [blocks[0], blocks[1] - 1]
+                let upColor = this.grid[blocks[0]][blocks[1] - 1].getData('color')
+
                 if (upColor === this.currentColor)
                 {
-                    console.log('update up')
-                    coordsToAdd.push([blocks[0], blocks[1] - 1])
+                    if (this.checkDupe(coords, coordsToAdd))
+                    {
+                        coordsToAdd.push(coords)
+                        reCheck = true
+                    }
                 }
             }
             if (blocks[1] < 13)
             {
-                downColor = this.grid[blocks[0]][blocks[1] + 1].getData('color')
+                let coords = [blocks[0], blocks[1] + 1]
+                let downColor = this.grid[blocks[0]][blocks[1] + 1].getData('color')
+
                 if (downColor === this.currentColor)
                 {
-                    console.log('update down')
-                    coordsToAdd.push([blocks[0], blocks[1] + 1])
+                    if (this.checkDupe(coords, coordsToAdd))
+                    {
+                        coordsToAdd.push(coords)
+                        reCheck = true
+                    }
                 }
             }
+        }
+        if (reCheck === true)
+        {
+            this.matched = this.matched.concat(coordsToAdd)
+            this.checkBlocks([])
         }
         return coordsToAdd
     }
     
-
-
-
-    // array of arrays that store coordinates of blocks with the same color // matched
-
-    changeColor(toColor, x, y)
-    {
-        // need to update all colors in matched
-        this.grid[x][y].setTexture("blobs", this.frames[buttonColor])
-        
-    }
-
-    updateMatched(x, y)
-    {
-        // if a block has the same color then add it to matched
-    }
-
-
 
     floodFill(buttonColor, x, y)
     {   
@@ -242,6 +251,3 @@ class Game extends Phaser.Scene
 
 export default Game
 
-// first check if it isnt the color 
-// second check if it is the same color
-// push this.grid[x][y] if it does match buttonColor to this.matched 
