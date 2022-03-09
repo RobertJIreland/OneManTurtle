@@ -15,7 +15,7 @@ class Game extends Phaser.Scene
         this.currentColor = null;
         this.frames = ["orange-square.png", "yellow-square.png", "blue-square.png", "pink-square.png", "red-square.png", "green-square.png" ];
         this.moves = 25
-        this.matched = [[0,0]]
+        this.matched = []
         this.block;
     }
     
@@ -57,35 +57,7 @@ class Game extends Phaser.Scene
             }
         })
 
-        // Blobs
-        const blobOrange = new Blob(this, 325, 100, 'blobs', 'blob-orange.png')
-        const blobYellow = new Blob(this, 325, 325, 'blobs', 'blob-yellow.png')
-        const blobBlue = new Blob(this, 325, 525, 'blobs', 'blob-blue.png')
-        const blobPink = new Blob(this, 1025, 100, 'blobs', 'blob-pink.png')
-        const blobRed = new Blob(this, 1025, 325, 'blobs', 'blob-red.png')
-        const blobGreen = new Blob(this, 1025, 525, 'blobs', 'blob-green.png')
-
-        // lol
-        blobGreen.setAngle(0)
-        
-        const blobCollection = 
-        [
-            blobOrange,
-            blobYellow,
-            blobBlue,
-            blobPink,
-            blobRed,
-            blobGreen
-        ]
-        
-        this.add.existing(blobOrange)
-        this.add.existing(blobYellow)
-        this.add.existing(blobBlue)
-        this.add.existing(blobPink)
-        this.add.existing(blobRed)
-        this.add.existing(blobGreen)
-
-        
+        this.setup()
 
         // Grid
         for (let x = 0; x < 14; x++)
@@ -105,13 +77,12 @@ class Game extends Phaser.Scene
                 this.block.setData('color', color)
 
                 
-                blobOrange.setData('color', this.frames.indexOf('orange-square.png'))
-                blobYellow.setData('color', this.frames.indexOf('yellow-square.png'))
-                blobBlue.setData('color', this.frames.indexOf('blue-square.png'))
-                blobPink.setData('color', this.frames.indexOf('pink-square.png'))
-                blobRed.setData('color', this.frames.indexOf('red-square.png'))
-                blobGreen.setData('color', this.frames.indexOf('green-square.png'))
-                
+                this.blobOrange.setData('color', this.frames.indexOf('orange-square.png'))
+                this.blobYellow.setData('color', this.frames.indexOf('yellow-square.png'))
+                this.blobBlue.setData('color', this.frames.indexOf('blue-square.png'))
+                this.blobPink.setData('color', this.frames.indexOf('pink-square.png'))
+                this.blobRed.setData('color', this.frames.indexOf('red-square.png'))
+                this.blobGreen.setData('color', this.frames.indexOf('green-square.png'))
 
                 this.grid[x][y] = this.block;
             }
@@ -120,59 +91,83 @@ class Game extends Phaser.Scene
 
         this.currentColor =  this.grid[0][0].getData("color")
 
-        for (let blobObject of blobCollection)
+        this.checkBlocks([]);
+
+        // OnClick event for each blob
+        // for (let blobObject of blobCollection)
+        // {
+        //     blobObject.on('pointerdown', () =>
+        //     {
+        //         let buttonColor = blobObject.getData('color')
+        
+
+        //         if (this.currentColor !== buttonColor)
+        //         {   
+        //             this.goodSound.play()
+
+        //             this.checkBlocks([]);
+
+        //             for (let blocks of this.matched)
+        //             {
+        //                 this.floodFill(buttonColor, blocks[0], blocks[1])
+        //             }
+
+        //             this.moves--
+        //         }
+        //         else
+        //         {
+        //             this.badSound.play()
+        //         }
+        //         // this.checkGameState();
+        //     })
+        // }
+    }
+    update()
+    {
+        for (let blobObject of this.blobCollection)
         {
             blobObject.on('pointerdown', () =>
             {
                 let buttonColor = blobObject.getData('color')
-            
+        
                 if (this.currentColor !== buttonColor)
                 {   
                     this.goodSound.play()
+
+                    this.checkBlocks([]);
+
+                    for (let blocks of this.matched)
+                    {
+                        this.floodFill(buttonColor, blocks[0], blocks[1])
+                    }
+                    
                     this.moves--
-                    this.floodFill(buttonColor, 0, 0)
                 }
                 else
                 {
                     this.badSound.play()
                 }
-                // this.currentColor = this.grid[0][0].getData("color")
-            
-                // let rightColor = this.grid[1][0].getData("color")
-
-                // if (this.currentColor === rightColor)
-                // {
-                //     this.matched.push([1,0])
-                // }
-                // console.log(this.matched)
-
-                // check surrounding blocks for each block in matched
-
-                let coordsToAdd = []
-                coordsToAdd = this.checkBlocks(coordsToAdd);
-                // need to work on not adding duplicate coords
-                // if a new block is connected and the same color, then we need to check that block too
-                this.matched = this.matched.concat(coordsToAdd)
-                console.log(this.matched)
-                // update colors for blocks in matched array
-                for (let blocks of this.matched)
-                { 
-                    this.floodFill(buttonColor, blocks[0], blocks[1])
-                }
+                // this.checkGameState();
             })
         }
+        // check game state here
     }
 
 
     checkDupe(coords, coordsToAdd)
-    {
-        let b = JSON.stringify(coords)
-        let test = JSON.stringify(this.matched.concat(coordsToAdd))
-        return test.indexOf(b) === -1
+    {   
+        let test = JSON.stringify(coords)
+        let allCoords = JSON.stringify(this.matched.concat(coordsToAdd))
+        return allCoords.indexOf(test) === -1
     }
 
     checkBlocks(coordsToAdd)
     {
+        if (this.matched.length === 0)
+        {
+            this.matched.push([0, 0])
+        }
+
         let reCheck = false
         for (let blocks of this.matched)
         {
@@ -233,12 +228,18 @@ class Game extends Phaser.Scene
                 }
             }
         }
+
         if (reCheck === true)
         {
+            console.log('m', this.matched.length)
+            console.log('c', coordsToAdd.length)
+            this.checkBlocks(coordsToAdd)
+        }else{
+            console.log('m', this.matched.length)
+            console.log('c', coordsToAdd.length)
             this.matched = this.matched.concat(coordsToAdd)
-            this.checkBlocks([])
         }
-        return coordsToAdd
+
     }
     
 
@@ -247,6 +248,44 @@ class Game extends Phaser.Scene
         this.grid[x][y].setTexture("blobs", this.frames[buttonColor])
         this.currentColor = buttonColor
     }
+
+    setup()
+    {
+        // Blobs
+        this.blobOrange = new Blob(this, 325, 100, 'blobs', 'blob-orange.png')
+        this.blobYellow = new Blob(this, 325, 325, 'blobs', 'blob-yellow.png')
+        this.blobBlue = new Blob(this, 325, 525, 'blobs', 'blob-blue.png')
+        this.blobPink = new Blob(this, 1025, 100, 'blobs', 'blob-pink.png')
+        this.blobRed = new Blob(this, 1025, 325, 'blobs', 'blob-red.png')
+        this.blobGreen = new Blob(this, 1025, 525, 'blobs', 'blob-green.png')
+
+        // Array of blobs for the onClick event 
+        this.blobCollection = 
+        [
+            this.blobOrange,
+            this.blobYellow,
+            this.blobBlue,
+            this.blobPink,
+            this.blobRed,
+            this.blobGreen
+        ]
+
+        // lol
+        this.blobGreen.setAngle(0)
+        
+        // Adds blobs to the scene 
+        this.add.existing(this.blobOrange)
+        this.add.existing(this.blobYellow)
+        this.add.existing(this.blobBlue)
+        this.add.existing(this.blobPink)
+        this.add.existing(this.blobRed)
+        this.add.existing(this.blobGreen)
+    }
+
+    // checkGameState()
+    // {    
+    // }
+
 }
 
 export default Game
