@@ -11,12 +11,12 @@ class Game extends Phaser.Scene
         super('game')
 
         this.grid = []
-        this.gridBG;
         this.currentColor = null;
         this.frames = ["orange-square.png", "yellow-square.png", "blue-square.png", "pink-square.png", "red-square.png", "green-square.png" ];
-        this.moves = 25
+        this.moves = 2
         this.matched = []
         this.block;
+        this.text;
     }
     
     create()
@@ -24,6 +24,9 @@ class Game extends Phaser.Scene
         // Background & Game Board Grid
         this.add.image(400, 200, 'background')
         this.gridBG = this.add.image(675, 300, "blobs", "grid.png")
+
+        // Move Counter
+        this.text = this.add.text(10, 125, 'Moves left: ' + this.moves, { fontFamily: 'CuteFont', fontSize: 50, color: 0xffffff })
 
         // Audio
         this.backgroundMusic = this.sound.add('audio', {
@@ -59,6 +62,23 @@ class Game extends Phaser.Scene
 
         this.setup()
 
+        // Sound Effects On Blobs
+        for (let blobObject of this.blobCollection)
+        {
+            blobObject.on('pointerdown', () => 
+            {
+                let buttonColor = blobObject.getData('color')
+                if (this.currentColor !== buttonColor)
+                {
+                    this.goodSound.play()
+                }
+                else
+                {
+                    this.badSound.play()
+                }
+            })
+        }
+
         // Grid
         for (let x = 0; x < 14; x++)
         {   
@@ -88,39 +108,11 @@ class Game extends Phaser.Scene
             }
         }
 
-
         this.currentColor =  this.grid[0][0].getData("color")
 
         this.checkBlocks([]);
-
-        // OnClick event for each blob
-        // for (let blobObject of blobCollection)
-        // {
-        //     blobObject.on('pointerdown', () =>
-        //     {
-        //         let buttonColor = blobObject.getData('color')
         
-
-        //         if (this.currentColor !== buttonColor)
-        //         {   
-        //             this.goodSound.play()
-
-        //             this.checkBlocks([]);
-
-        //             for (let blocks of this.matched)
-        //             {
-        //                 this.floodFill(buttonColor, blocks[0], blocks[1])
-        //             }
-
-        //             this.moves--
-        //         }
-        //         else
-        //         {
-        //             this.badSound.play()
-        //         }
-        //         // this.checkGameState();
-        //     })
-        // }
+        
     }
     update()
     {
@@ -132,25 +124,18 @@ class Game extends Phaser.Scene
         
                 if (this.currentColor !== buttonColor)
                 {   
-                    this.goodSound.play()
-
+                    this.moves--
+                    this.text.setText("Moves left: " +  this.moves)
                     this.checkBlocks([]);
 
                     for (let blocks of this.matched)
                     {
                         this.floodFill(buttonColor, blocks[0], blocks[1])
                     }
-                    
-                    this.moves--
                 }
-                else
-                {
-                    this.badSound.play()
-                }
-                // this.checkGameState();
             })
         }
-        // check game state here
+        this.checkGameState();
     }
 
 
@@ -242,7 +227,6 @@ class Game extends Phaser.Scene
 
     }
     
-
     floodFill(buttonColor, x, y)
     {   
         this.grid[x][y].setTexture("blobs", this.frames[buttonColor])
@@ -282,11 +266,31 @@ class Game extends Phaser.Scene
         this.add.existing(this.blobGreen)
     }
 
-    // checkGameState()
-    // {    
-    // }
-
+    checkGameState()
+    {   
+        if (this.moves === 0)
+        {
+            for (let blobObject of this.blobCollection)
+            {
+                blobObject.removeInteractive()
+            }
+            for (let block of this.grid)
+            {
+                this.tweens.add
+                ({
+                    targets: block,
+                    scaleX: 0,
+                    scaleY: 0,
+                    duration: 1500,
+                    ease: 'Power3'
+                })
+            }
+            this.add.text(525, 100, "So close! \nTry again?", { fontFamily: 'CuteFont', fontSize: 100, color: 0xffffff })
+            let yesButton = this.add.text(525, 200, "Yes", { fontFamily: 'CuteFont', fontSize: 100, color: 0xffffff })
+            yesButton.setInteractive()
+            
+        }
+    }
 }
-
 export default Game
 
