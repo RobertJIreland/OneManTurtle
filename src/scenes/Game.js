@@ -13,8 +13,8 @@ class Game extends Phaser.Scene
         this.grid = []
         this.currentColor = null;
         this.frames = ["orange-square.png", "yellow-square.png", "blue-square.png", "pink-square.png", "red-square.png", "green-square.png" ];
-        this.moves = 2
         this.matched = []
+        this.moves = 2
         this.block;
         this.text;
     }
@@ -62,57 +62,9 @@ class Game extends Phaser.Scene
 
         this.setup()
 
-        // Sound Effects On Blobs
-        for (let blobObject of this.blobCollection)
-        {
-            blobObject.on('pointerdown', () => 
-            {
-                let buttonColor = blobObject.getData('color')
-                if (this.currentColor !== buttonColor)
-                {
-                    this.goodSound.play()
-                }
-                else
-                {
-                    this.badSound.play()
-                }
-            })
-        }
-
-        // Grid
-        for (let x = 0; x < 14; x++)
-        {   
-            this.grid[x] = []
-
-            for (let y = 0; y < 14; y++)
-            {
-                let sx = 444 + (x * 36);
-                let sy = 63 + (y * 36);
-                let color = Phaser.Math.Between(0, 5);
-
-                this.block = this.add.image(sx, sy, "blobs", this.frames[color])
-            
-
-                this.block.setData('oldColor', color)
-                this.block.setData('color', color)
-
-                
-                this.blobOrange.setData('color', this.frames.indexOf('orange-square.png'))
-                this.blobYellow.setData('color', this.frames.indexOf('yellow-square.png'))
-                this.blobBlue.setData('color', this.frames.indexOf('blue-square.png'))
-                this.blobPink.setData('color', this.frames.indexOf('pink-square.png'))
-                this.blobRed.setData('color', this.frames.indexOf('red-square.png'))
-                this.blobGreen.setData('color', this.frames.indexOf('green-square.png'))
-
-                this.grid[x][y] = this.block;
-            }
-        }
-
         this.currentColor =  this.grid[0][0].getData("color")
 
         this.checkBlocks([]);
-        
-        
     }
     update()
     {
@@ -264,6 +216,50 @@ class Game extends Phaser.Scene
         this.add.existing(this.blobPink)
         this.add.existing(this.blobRed)
         this.add.existing(this.blobGreen)
+
+        for (let x = 0; x < 14; x++)
+        {   
+            this.grid[x] = []
+
+            for (let y = 0; y < 14; y++)
+            {
+                let sx = 444 + (x * 36);
+                let sy = 63 + (y * 36);
+                let color = Phaser.Math.Between(0, 5);
+
+                this.block = this.add.image(sx, sy, "blobs", this.frames[color])
+            
+
+                this.block.setData('oldColor', color)
+                this.block.setData('color', color)
+
+                
+                this.blobOrange.setData('color', this.frames.indexOf('orange-square.png'))
+                this.blobYellow.setData('color', this.frames.indexOf('yellow-square.png'))
+                this.blobBlue.setData('color', this.frames.indexOf('blue-square.png'))
+                this.blobPink.setData('color', this.frames.indexOf('pink-square.png'))
+                this.blobRed.setData('color', this.frames.indexOf('red-square.png'))
+                this.blobGreen.setData('color', this.frames.indexOf('green-square.png'))
+
+                this.grid[x][y] = this.block;
+            }
+        }
+
+        for (let blobObject of this.blobCollection)
+        {
+            blobObject.on('pointerdown', () => 
+            {
+                let buttonColor = blobObject.getData('color')
+                if (this.currentColor !== buttonColor)
+                {
+                    this.goodSound.play()
+                }
+                else
+                {
+                    this.badSound.play()
+                }
+            })
+        }
     }
 
     checkGameState()
@@ -285,10 +281,22 @@ class Game extends Phaser.Scene
                     ease: 'Power3'
                 })
             }
-            this.add.text(525, 100, "So close! \nTry again?", { fontFamily: 'CuteFont', fontSize: 100, color: 0xffffff })
-            let yesButton = this.add.text(525, 200, "Yes", { fontFamily: 'CuteFont', fontSize: 100, color: 0xffffff })
+            let tryAgainText = this.add.text(525, 100, "So close! \nTry again?", { fontFamily: 'CuteFont', fontSize: 100, color: 0xffffff })
+            let yesButton = this.add.text(525, 300, "Yes", { fontFamily: 'CuteFont', fontSize: 100, color: 0xffffff })
+            let noButton = this.add.text(725, 300, "No", { fontFamily: 'CuteFont', fontSize: 100, color: 0xffffff })
+
             yesButton.setInteractive()
-            
+            yesButton.on('pointerdown', () =>
+            {
+                yesButton.destroy()
+                noButton.destroy()
+                tryAgainText.destroy()
+                this.moves = 2
+                this.text.setText('Moves left ' + this.moves)
+                this.setup()
+            })
+            noButton.setInteractive()
+
         }
     }
 }
