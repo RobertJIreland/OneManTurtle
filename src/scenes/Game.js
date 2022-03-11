@@ -14,7 +14,7 @@ class Game extends Phaser.Scene
         this.currentColor = null;
         this.frames = ["orange-square.png", "yellow-square.png", "blue-square.png", "pink-square.png", "red-square.png", "green-square.png" ];
         this.matched = []
-        this.moves = 2
+        this.moves = 25
         this.block;
         this.text;
     }
@@ -63,7 +63,6 @@ class Game extends Phaser.Scene
         // Generates blocks in grid and renders instructions
         this.setup()
         this.instructions = this.add.image(675, 300, 'instructions')
-        // this.currentColor = this.grid[0][0].getData('color')
 
     }
     update()
@@ -88,6 +87,7 @@ class Game extends Phaser.Scene
         }
 
         let reCheck = false
+
         for (let blocks of this.matched)
         {
             if (blocks[0] < 13)
@@ -148,6 +148,7 @@ class Game extends Phaser.Scene
             }
         }
 
+        // recursive check if we find blocks touching with matching colors
         if (reCheck === true)
         {
             this.checkBlocks(coordsToAdd)
@@ -164,17 +165,21 @@ class Game extends Phaser.Scene
             let x = block[0]
             let y = block[1]
             this.grid[x][y].setTexture('blobs', this.frames[buttonColor])
+            this.grid[x][y].setData('color', buttonColor)
             this.currentColor = buttonColor
         }
     }
-    blobClick(blob)
+
+    blobClick(blobColor)
     {
         let blocksToFill = this.checkBlocks(this.matched)
-        if (this.currentColor !== blob)
+        if (this.currentColor !== blobColor)
         {
             this.moves--
             this.goodSound.play()
-            this.floodFill(blob, blocksToFill)
+            this.floodFill(blobColor, blocksToFill)
+            
+            this.checkWon()
         }
         else
         {
@@ -225,12 +230,9 @@ class Game extends Phaser.Scene
                 let color = Phaser.Math.Between(0, 5);
 
                 this.block = this.add.image(sx, sy, "blobs", this.frames[color])
-            
 
-                this.block.setData('oldColor', color)
                 this.block.setData('color', color)
 
-                
                 this.blobOrange.setData('color', this.frames.indexOf('orange-square.png'))
                 this.blobYellow.setData('color', this.frames.indexOf('yellow-square.png'))
                 this.blobBlue.setData('color', this.frames.indexOf('blue-square.png'))
@@ -251,6 +253,55 @@ class Game extends Phaser.Scene
                 this.blobClick(blobObject.getData('color'))
             })
         }
+        this.currentColor = this.grid[0][0].getData('color')
+    }
+
+    checkWon()
+    {
+        for (let x = 0; x < 14; x++)
+        {
+            for (let y = 0; y < 14; y++)
+            {
+                if (this.grid[x][y].getData('color') !== this.currentColor)
+                {
+                    return false
+                }
+            }
+        }
+        for (let blobObject of this.blobCollection)
+        {
+            blobObject.removeInteractive()
+        }
+        for (let block of this.grid)
+        {
+            this.tweens.add
+            ({
+                targets: block,
+                duration: 1500,
+                x: 584,
+                y: 169,
+                ease: 'Bounce.easeOut',
+            })
+        }
+        let youWinText = this.add.text(525, 100, "You Win! \nTry again?", { fontFamily: 'CuteFont', fontSize: 100, color: 0xffffff })
+        let yesButton = this.add.text(525, 300, "Yes", { fontFamily: 'CuteFont', fontSize: 100, color: 0xffffff })
+        let noButton = this.add.text(725, 300, "No", { fontFamily: 'CuteFont', fontSize: 100, color: 0xffffff })
+
+        yesButton.setInteractive()
+        yesButton.on('pointerdown', () =>
+        {
+            yesButton.destroy()
+            noButton.destroy()
+            youWinText.destroy()
+            this.moves = 25
+            this.matched = []
+            this.setup()
+        })
+            noButton.setInteractive()
+            noButton.on('pointerdown', () =>
+            {
+                this.badSound.play()
+            })
     }
 
     checkGameState()
@@ -284,9 +335,6 @@ class Game extends Phaser.Scene
                 tryAgainText.destroy()
                 this.moves = 25
                 this.matched = []
-                this.currentColor =  this.grid[0][0].getData("color")
-                this.checkBlocks([])
-                this.text.setText('Moves left ' + this.moves)
                 this.setup()
             })
             noButton.setInteractive()
