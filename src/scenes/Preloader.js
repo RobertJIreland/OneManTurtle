@@ -6,6 +6,7 @@ import musicButton from '../../assets/music-button.png'
 import audio from '../../assets/music.ogg'
 import goodSound from '../../assets/positive.wav'
 import badSound from '../../assets/negative_2.wav'
+import instructions from '../../assets/instructions.png'
 
 
 class Preloader extends Phaser.Scene
@@ -15,7 +16,10 @@ class Preloader extends Phaser.Scene
         super("preloader")
     }
     preload()
-    {
+    {   
+        // Instructions
+        this.load.image('instructions', instructions)
+        
         // Background
         this.load.image('background', backgroundImage)
 

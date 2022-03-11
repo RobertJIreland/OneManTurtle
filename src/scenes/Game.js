@@ -60,33 +60,15 @@ class Game extends Phaser.Scene
             }
         })
 
+        // Generates blocks in grid and renders instructions
         this.setup()
+        this.instructions = this.add.image(675, 300, 'instructions')
+        // this.currentColor = this.grid[0][0].getData('color')
 
-        this.currentColor =  this.grid[0][0].getData("color")
-
-        this.checkBlocks([]);
     }
     update()
     {
-        for (let blobObject of this.blobCollection)
-        {
-            blobObject.on('pointerdown', () =>
-            {
-                let buttonColor = blobObject.getData('color')
-        
-                if (this.currentColor !== buttonColor)
-                {   
-                    this.moves--
-                    this.text.setText("Moves left: " +  this.moves)
-                    this.checkBlocks([]);
-
-                    for (let blocks of this.matched)
-                    {
-                        this.floodFill(buttonColor, blocks[0], blocks[1])
-                    }
-                }
-            })
-        }
+        this.text.setText('Moves left: ' + this.moves)
         this.checkGameState();
     }
 
@@ -168,21 +150,36 @@ class Game extends Phaser.Scene
 
         if (reCheck === true)
         {
-            console.log('m', this.matched.length)
-            console.log('c', coordsToAdd.length)
             this.checkBlocks(coordsToAdd)
-        }else{
-            console.log('m', this.matched.length)
-            console.log('c', coordsToAdd.length)
-            this.matched = this.matched.concat(coordsToAdd)
         }
 
+        this.matched = coordsToAdd
+        return coordsToAdd
     }
     
-    floodFill(buttonColor, x, y)
+    floodFill(buttonColor, blocks)
     {   
-        this.grid[x][y].setTexture("blobs", this.frames[buttonColor])
-        this.currentColor = buttonColor
+        for (let block of blocks)
+        {
+            let x = block[0]
+            let y = block[1]
+            this.grid[x][y].setTexture('blobs', this.frames[buttonColor])
+            this.currentColor = buttonColor
+        }
+    }
+    blobClick(blob)
+    {
+        let blocksToFill = this.checkBlocks(this.matched)
+        if (this.currentColor !== blob)
+        {
+            this.moves--
+            this.goodSound.play()
+            this.floodFill(blob, blocksToFill)
+        }
+        else
+        {
+            this.badSound.play()
+        }
     }
 
     setup()
@@ -247,17 +244,11 @@ class Game extends Phaser.Scene
 
         for (let blobObject of this.blobCollection)
         {
+            blobObject.setInteractive()
             blobObject.on('pointerdown', () => 
             {
-                let buttonColor = blobObject.getData('color')
-                if (this.currentColor !== buttonColor)
-                {
-                    this.goodSound.play()
-                }
-                else
-                {
-                    this.badSound.play()
-                }
+                this.instructions.destroy()
+                this.blobClick(blobObject.getData('color'))
             })
         }
     }
@@ -291,12 +282,18 @@ class Game extends Phaser.Scene
                 yesButton.destroy()
                 noButton.destroy()
                 tryAgainText.destroy()
-                this.moves = 2
+                this.moves = 25
+                this.matched = []
+                this.currentColor =  this.grid[0][0].getData("color")
+                this.checkBlocks([])
                 this.text.setText('Moves left ' + this.moves)
                 this.setup()
             })
             noButton.setInteractive()
-
+            noButton.on('pointerdown', () =>
+            {
+                this.badSound.play()
+            })
         }
     }
 }
