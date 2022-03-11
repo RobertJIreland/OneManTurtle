@@ -65,12 +65,6 @@ class Game extends Phaser.Scene
         this.instructions = this.add.image(675, 300, 'instructions')
 
     }
-    update()
-    {
-        this.text.setText('Moves left: ' + this.moves)
-        this.checkGameState();
-    }
-
 
     checkDupe(coords, coordsToAdd)
     {   
@@ -155,7 +149,7 @@ class Game extends Phaser.Scene
         }
 
         this.matched = coordsToAdd
-        return coordsToAdd
+        return this.matched
     }
     
     floodFill(buttonColor, blocks)
@@ -343,6 +337,12 @@ class Game extends Phaser.Scene
                 this.badSound.play()
             })
         }
+    }
+
+    update()
+    {
+        this.text.setText('Moves left: ' + this.moves)
+        this.checkGameState();
     }
 }
 export default Game
